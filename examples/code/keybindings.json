@@ -1,0 +1,7 @@
+[
+	{
+		"key": "ctrl+shift+g g",
+		"command": "workbench.action.tasks.runTask",
+		"args": "ingit"
+	}
+]

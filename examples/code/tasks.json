@@ -1,0 +1,21 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Ingit",
+			"type": "shell",
+			"command": "ingit",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"presentation": {
+				"echo": false,
+				"reveal": "always",
+				"focus": true,
+				"panel": "new",
+				"clear": true
+			},
+			"problemMatcher": []
+		}
+	]
+}
