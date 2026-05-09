@@ -1,31 +1,210 @@
 # ingit
-An integrated TUI git manager that can be added to any IDE that has support for a terminal, yes i know it's like magit, but i promise there are some interesting stuff here as well.
 
-## What's 'Ingit'
-Well it stands for integrated git, cli is really cool and useful when we have to resolve something complex, but typing git this git that git all the time for people that like to commit more often can become really annoying.
-Not only that but working in a mono repo enviroment is also kind of pain without external tools, modern day software development has advanced quite a lot compared to when the git cli client was created and in todays workflow it almost feels like a setback.
-This tool aims to solve that, with few tricks up it's sleeve for those willing to master the dark arts terminal based applications, i will show you how to mend files with ease, alter the very structure of your source and divide those 10-20 file changes into a nicely organized execution plan
+A terminal-native Git workspace manager designed for modern development workflows.
 
-###
-Features
+`ingit` focuses on fast repository navigation, structured commit planning, multi-repository management, and IDE integration — all without leaving the terminal.
 
- - Multi-Repository change overview | ideal for a mono repository projects, if you have to push changes in 3 different projects there is no need to switch editors or terminals you can simply manage them one simple interface
- - Quick commits | want to push something quickly into your current branch, no problem one key press away
- - Context aware? Well if there are no more than one repo you wont even see the project manager so it will just straight into the repository that you have
- - Easy to integrate into any IDE that has support for terminals | Amazing for i3 based systems
- - Push planner, lets you organize big changes into multiple branches, if you didn't plan ahead before committing you can create branches on the fly mark and move files and excute them all at once in a simple non destructive UI, repository and file states are not mutated till a plan is executed, so your files remain safe.
+Yes, tools like :contentReference[oaicite:0]{index=0} already exist, but `ingit` approaches the problem differently:
+- editor agnostic
+- terminal first
+- mono-repository aware
+- optimized for fast iterative commits
+- designed to integrate into existing workflows instead of replacing them
 
+---
 
-#### Integratins
-If you find it interesting and are willing to try it out follow the build steps to compile the software, as for integrations, the tool comes with ready made examples for vscode and i3, because it's what i personally use but i am happy to provide more if you open a PR for your editor, wont go on a witchunt, but will most definantly make as simple as possible to integrate into the most commonly used IDEs, as long as there is the demand for it.
+## Preview
 
-##### Building from source
+> Add screenshots here once available.
 
- - First get the latest GOLANG version if you don't have it
- - navigate to the cloned folder
- - go mod tidy
- - go build -o ingit .
+```md
+![Overview](./assets/overview.png)
+![Push Planner](./assets/planner.png)
+```
 
-You can either add it to profile , zshrc, system env, or integrate it inside codium, vscoe, emacs, or figure a way to set it up for your own IDE of choice if there is no option here
+---
 
-I am open to PRs and suggestion for new features that you might think are useful and i am going to add them if they benefit all users.
+# Why ingit
+
+Git CLI remains extremely powerful, especially for advanced operations and recovery workflows.
+
+However, modern software development has evolved significantly:
+- large mono repositories
+- multiple active services
+- rapid iterative commits
+- feature branch explosion
+- staged execution plans
+- terminal-driven workflows
+- tiled window manager setups
+
+In these environments, repeatedly typing Git commands, switching terminals, and manually organizing changes can become unnecessarily disruptive.
+
+`ingit` aims to streamline that process.
+
+It provides a structured TUI workflow for:
+- managing multiple repositories simultaneously
+- organizing changes into execution plans
+- rapidly creating commits
+- exploring branches visually
+- operating entirely from the keyboard
+- integrating directly into editors and window managers
+
+---
+
+# Features
+
+## Multi-Repository Overview
+
+Designed for mono-repository and multi-service environments.
+
+Track and manage changes across multiple repositories from a single interface without switching terminals or editor windows.
+
+---
+
+## Quick Push Workflow
+
+Need to commit and push immediately to the current branch?
+
+`ingit` provides a dedicated quick-push flow optimized for minimal interaction.
+
+---
+
+## Push Planner
+
+One of the core features of `ingit`.
+
+Large unorganized changes can be:
+- split into multiple execution plans
+- assigned to separate branches
+- grouped by file ownership
+- committed independently
+- executed sequentially
+
+All without mutating repository state until execution.
+
+This allows safe commit restructuring even after development work has already happened.
+
+---
+
+## Branch Explorer
+
+Browse:
+- local branches
+- remote branches
+- commit history
+- repository contents
+
+and switch branches directly from the TUI.
+
+---
+
+## Context-Aware Layout
+
+Single repository?
+
+`ingit` automatically simplifies the UI and removes unnecessary repository management panels.
+
+---
+
+## Terminal Native
+
+Built specifically for:
+- keyboard-driven workflows
+- tiling window managers
+- IDE terminal integration
+- remote development
+- SSH workflows
+
+---
+
+# Integrations
+
+`ingit` is intentionally editor agnostic.
+
+Anything capable of launching a terminal can integrate with it.
+
+Ready-made integrations are included for:
+- VS Code
+- VSCodium
+- i3
+
+Additional integrations are welcome through pull requests.
+
+---
+
+# Building From Source
+
+## Requirements
+
+- Go 1.24+ recommended
+
+## Build
+
+```bash
+git clone <repo>
+cd ingit
+
+go mod tidy
+go build -o ingit .
+```
+
+Optional global install:
+
+```bash
+mkdir -p ~/.local/bin
+cp ./ingit ~/.local/bin/ingit
+chmod +x ~/.local/bin/ingit
+```
+
+Verify installation:
+
+```bash
+ingit
+```
+
+---
+
+# Integration Examples
+
+See:
+- `README_VSCODE.md`
+- `README_I3.md`
+
+for ready-made integration setups.
+
+---
+
+# Philosophy
+
+`ingit` does not attempt to replace Git.
+
+It attempts to reduce workflow friction around Git.
+
+The goal is to make:
+- frequent commits
+- branch organization
+- multi-repository work
+- execution planning
+
+feel lightweight and immediate.
+
+---
+
+# Contributing
+
+Feature suggestions and pull requests are welcome.
+
+If an integration for your editor or environment does not exist yet, feel free to open a PR.
+
+The project aims to remain:
+- lightweight
+- terminal-native
+- dependency minimal
+- workflow focused
+- editor agnostic
+
+---
+
+# License
+
+MIT
