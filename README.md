@@ -2,97 +2,70 @@
 
 A terminal-native Git workspace manager designed for modern development workflows.
 
-`ingit` focuses on fast repository navigation, structured commit planning, multi-repository management, branch exploration, and IDE integration — all without leaving the terminal.
+`ingit` focuses on fast repository navigation, structured commit planning, multi-repository management, and IDE integration — all without leaving the terminal.
 
-Built for:
-- keyboard-first developers
-- mono repository environments
-- terminal heavy workflows
-- tiled window manager users
-- fast iterative commits
-
----
-
-# Preview
-
-## Multi Repository Workflow
-
-![Multi Repository Overview](./assets/multi-repo-overview.png)
+Yes, tools like :contentReference[oaicite:0]{index=0} already exist, but `ingit` approaches the problem differently:
+- editor agnostic
+- terminal first
+- mono-repository aware
+- optimized for fast iterative commits
+- designed to integrate into existing workflows instead of replacing them
 
 ---
 
-## Side-by-Side Diff Viewer
+## Preview
 
-![Side By Side Diff](./assets/side-by-side-diff-view.png)
+> Add screenshots here once available.
 
----
-
-## Push Planner
-
-### Create Branch Plans
-
-![Planner Branch Creation](./assets/planner-branch-creation.png)
-
-### Assign Files To Plans
-
-![Planner Assignment](./assets/planner-file-assignment.png)
-
-### Graph View
-
-![Planner Graph](./assets/planner-graph-view.png)
-
-### Execute Plans
-
-![Planner Execution](./assets/planner-execution-complete.png)
-
----
-
-## Branch Explorer
-
-### Branch Overview
-
-![Branches](./assets/branches-view.png)
-
-### Explore Branch Contents
-
-![Branch File Explorer](./assets/branch-file-explorer.png)
+```md
+![Overview](./assets/overview.png)
+![Push Planner](./assets/planner.png)
+```
 
 ---
 
 # Why ingit
 
-Git CLI remains extremely powerful, especially for:
-- recovery workflows
-- advanced history manipulation
-- low-level repository operations
+Git CLI remains extremely powerful, especially for advanced operations and recovery workflows.
 
-However modern development workflows evolved significantly beyond simple repository management.
-
-Today developers commonly work with:
-- multiple repositories
+However, modern software development has evolved significantly:
 - large mono repositories
-- many feature branches
-- continuous iterative commits
-- terminal based workflows
-- editor integrated terminals
+- multiple active services
+- rapid iterative commits
+- feature branch explosion
+- staged execution plans
+- terminal-driven workflows
+- tiled window manager setups
 
-In these environments repeatedly switching terminals, editors, and manually organizing changes becomes unnecessary friction.
+In these environments, repeatedly typing Git commands, switching terminals, and manually organizing changes can become unnecessarily disruptive.
 
-`ingit` attempts to reduce that friction while keeping the flexibility and transparency of Git itself.
+`ingit` aims to streamline that process.
+
+It provides a structured TUI workflow for:
+- managing multiple repositories simultaneously
+- organizing changes into execution plans
+- rapidly creating commits
+- exploring branches visually
+- operating entirely from the keyboard
+- integrating directly into editors and window managers
 
 ---
 
 # Features
 
-## Multi Repository Overview
+## Multi-Repository Overview
 
-Designed specifically for mono repositories and multi-service environments.
+Designed for mono-repository and multi-service environments.
 
-Track changes across multiple repositories from a single interface.
+Track and manage changes across multiple repositories from a single interface without switching terminals or editor windows.
 
-No terminal switching.
-No editor switching.
-No repeated git status calls.
+---
+
+## Quick Push Workflow
+
+Need to commit and push immediately to the current branch?
+
+`ingit` provides a dedicated quick-push flow optimized for minimal interaction.
 
 ---
 
@@ -107,27 +80,9 @@ Large unorganized changes can be:
 - committed independently
 - executed sequentially
 
-without mutating repository state until execution.
+All without mutating repository state until execution.
 
 This allows safe commit restructuring even after development work has already happened.
-
----
-
-## Quick Push Workflow
-
-Need to quickly commit and push into the current branch?
-
-`ingit` provides a dedicated quick-push flow optimized for minimal interaction.
-
----
-
-## Side-by-Side Diff Viewer
-
-Built-in terminal diff visualization with:
-- staged changes
-- unstaged changes
-- side-by-side rendering
-- unified rendering fallback
 
 ---
 
@@ -147,7 +102,7 @@ and switch branches directly from the TUI.
 
 Single repository?
 
-`ingit` automatically simplifies the layout and removes unnecessary repository management panels.
+`ingit` automatically simplifies the UI and removes unnecessary repository management panels.
 
 ---
 
@@ -155,35 +110,10 @@ Single repository?
 
 Built specifically for:
 - keyboard-driven workflows
-- SSH workflows
+- tiling window managers
+- IDE terminal integration
 - remote development
-- tiled window managers
-- integrated IDE terminals
-
----
-
-# Keyboard Driven Workflow
-
-`ingit` is intentionally designed around fast keyboard navigation.
-
-Core controls include:
-
-| Key | Action |
-|---|---|
-| `j/k` | Navigate |
-| `h/l` | Switch panels |
-| `tab` | Cycle panels |
-| `space` | Mark file |
-| `b` | Create push plan |
-| `a` | Assign files |
-| `x` | Remove assigned file |
-| `C` | Set commit message |
-| `e` | Execute selected plan |
-| `E` | Execute all plans |
-| `P` | Quick push |
-| `s/u` | Stage / unstage |
-| `r` | Refresh |
-| `g` | Toggle graph mode |
+- SSH workflows
 
 ---
 
@@ -193,14 +123,12 @@ Core controls include:
 
 Anything capable of launching a terminal can integrate with it.
 
-Ready-made examples are included for:
+Ready-made integrations are included for:
 - VS Code
 - VSCodium
 - i3
 
-See:
-- `examples/code/`
-- `examples/i3/`
+Additional integrations are welcome through pull requests.
 
 ---
 
@@ -210,27 +138,17 @@ See:
 
 - Go 1.24+ recommended
 
----
-
-## Clone
+## Build
 
 ```bash
 git clone <repo>
 cd ingit
-```
 
----
-
-## Build
-
-```bash
 go mod tidy
 go build -o ingit .
 ```
 
----
-
-## Optional Global Install
+Optional global install:
 
 ```bash
 mkdir -p ~/.local/bin
@@ -246,53 +164,13 @@ ingit
 
 ---
 
-# Example Usage
+# Integration Examples
 
-Open inside current repository:
+See:
+- `README_VSCODE.md`
+- `README_I3.md`
 
-```bash
-ingit
-```
-
-Open specific repository:
-
-```bash
-ingit ~/Projects/my-project
-```
-
----
-
-# VS Code / VSCodium Integration
-
-Example integration files are included under:
-
-```text
-examples/code/
-```
-
-You can configure:
-- custom keybindings
-- dedicated tasks
-- fullscreen terminal launches
-- workspace aware launches
-
----
-
-# i3 Integration
-
-`ingit` was designed to integrate naturally into tiled window manager workflows.
-
-Example i3 configurations are included under:
-
-```text
-examples/i3/
-```
-
-This allows:
-- launching from active terminal paths
-- workspace aware execution
-- floating or tiled layouts
-- fast keyboard-driven repository management
+for ready-made integration setups.
 
 ---
 
@@ -309,21 +187,6 @@ The goal is to make:
 - execution planning
 
 feel lightweight and immediate.
-
----
-
-# Current State
-
-`ingit` is actively evolving.
-
-Features and workflows are still expanding rapidly.
-
-The project currently focuses on:
-- workflow speed
-- keyboard ergonomics
-- repository visualization
-- safe execution planning
-- editor integration
 
 ---
 
