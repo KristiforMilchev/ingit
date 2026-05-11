@@ -14,4 +14,5 @@ type GitProvider interface {
 	UnstageAll(repo models.Repo) error
 	ExecutePushPlan(repo models.Repo, plan models.PushPlanExecution) error
 	ExecuteQuickPush(repo models.Repo, message string) error
+	GitOutput(path string, args ...string) (string, error)
 }

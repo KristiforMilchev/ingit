@@ -177,6 +177,14 @@ func (g *GitCLI) ReadRecentCommits(repo models.Repo) []models.GitCommit {
 	return commits
 }
 
+func (g *GitCLI) GitOutput(path string, args ...string) (string, error) {
+	cmd := exec.Command("git", args...)
+	cmd.Dir = path
+
+	out, err := cmd.CombinedOutput()
+	return string(out), err
+}
+
 func parseBranchLine(state *models.GitState, line string) {
 	parts := strings.Split(line, "...")
 	state.Branch = parts[0]

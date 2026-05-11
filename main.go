@@ -6,6 +6,7 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 
+	"ingit/controllers"
 	"ingit/implementations"
 	"ingit/views"
 )
@@ -19,7 +20,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	model := views.NewModel(git, repos)
+	model := controllers.NewModel(git, repos, views.RenderAppView)
 	program := tea.NewProgram(model, tea.WithAltScreen())
 
 	if _, err := program.Run(); err != nil {
