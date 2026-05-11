@@ -8,13 +8,14 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 
+	"ingit/models"
 	"ingit/utils"
 )
 
 type BranchesModel struct {
 	RepoPath string
 
-	Branches []GitBranch
+	Branches []models.GitBranch
 	Selected int
 
 	CurrentBranch string
@@ -22,16 +23,12 @@ type BranchesModel struct {
 
 	Commits []string
 	Files   []string
+	Error   string
 
-	Error      string
+	Merged     bool
+	Deleted    bool
 	Done       bool
 	CheckedOut bool
-}
-
-type GitBranch struct {
-	Name    string
-	Current bool
-	Remote  bool
 }
 
 func NewBranchesModel() BranchesModel {
@@ -84,7 +81,7 @@ func (m *BranchesModel) Load(repoPath string) {
 			continue
 		}
 
-		m.Branches = append(m.Branches, GitBranch{
+		m.Branches = append(m.Branches, models.GitBranch{
 			Name:    name,
 			Current: current || name == m.CurrentBranch,
 			Remote:  remote,
