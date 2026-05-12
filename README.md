@@ -126,6 +126,24 @@ This makes it possible to safely restructure work after development has already 
 
 ---
 
+## Surgery Mode
+
+The surgery mode allows large changes to single file to be split into multiple commits.
+The idea is to have almost the same control as plans but on a file level.
+
+Files can be:
+- grouped into separate commit section
+- each commit section has it's own dedicated commit message
+- committed independently
+- executed sequentially
+
+Repository state is not modified until execution.
+
+This makes it possible to safely restructure work after development has already happened.
+
+---
+
+
 ## Branch Explorer
 
 Browse:
