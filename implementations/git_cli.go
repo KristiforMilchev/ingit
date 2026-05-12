@@ -387,3 +387,11 @@ func (g *GitCLI) git(dir string, args ...string) (string, error) {
 	}
 	return stdout.String(), nil
 }
+func (g GitCLI) GitOutputWithInput(repoPath string, input string, args ...string) (string, error) {
+	cmd := exec.Command("git", args...)
+	cmd.Dir = repoPath
+	cmd.Stdin = strings.NewReader(input)
+
+	out, err := cmd.CombinedOutput()
+	return string(out), err
+}

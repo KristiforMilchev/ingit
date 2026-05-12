@@ -27,6 +27,9 @@ func renderHeader(state states.AppState) string {
 	if state.Mode == enums.ModeBranches {
 		mode = "branches"
 	}
+	if state.Mode == enums.ModeSurgery {
+		mode = "surgery"
+	}
 
 	width := state.Width
 	if width < 20 {
@@ -39,7 +42,7 @@ func renderHeader(state states.AppState) string {
 	}
 
 	text := fmt.Sprintf(
-		" GIT COCKPIT │ %s │ %s │ %s │ files:%d ",
+		" INGIT │ %s │ %s │ %s │ files:%d ",
 		mode,
 		repo.Name,
 		branch,
@@ -66,10 +69,12 @@ func renderFooter(state states.AppState, w int) string {
 		commands = "enter commit+push · esc cancel · type message"
 	case enums.ModeBranches:
 		commands = "enter checkout · m merge · M merge+delete · d delete · tab commits/files · j/k move · r refresh · esc back · q"
+	case enums.ModeSurgery:
+		commands = "space select hunk · C message · e execute · j/k move · esc back"
 	case enums.ModePush:
 		commands = "esc git · g graph/text · C msg · e push · E all · tab panel · space mark · b plan · a assign · x unassign · r refresh · q"
 	default:
-		commands = "p planner · P quick push · B branches · j/k move · h/l/tab panel · s/u stage · S/U all · r refresh · q"
+		commands = "p planner · P quick push · B branches · I surgery · j/k move · h/l/tab panel · s/u stage · S/U all · r refresh · q"
 	}
 
 	status := state.StatusMsg

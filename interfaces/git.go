@@ -15,4 +15,5 @@ type GitProvider interface {
 	ExecutePushPlan(repo models.Repo, plan models.PushPlanExecution) error
 	ExecuteQuickPush(repo models.Repo, message string) error
 	GitOutput(path string, args ...string) (string, error)
+	GitOutputWithInput(repoPath string, input string, args ...string) (string, error)
 }

@@ -45,7 +45,7 @@ Create:
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Git Cockpit",
+      "label": "ingit",
       "type": "shell",
       "command": "ingit",
       "options": {
@@ -91,7 +91,7 @@ Add:
   {
     "key": "ctrl+shift+g g",
     "command": "workbench.action.tasks.runTask",
-    "args": "Git Cockpit"
+    "args": "ingit"
   }
 ]
 ```

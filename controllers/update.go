@@ -154,6 +154,29 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, nil
 		}
 
+		if m.State.Mode == enums.ModeSurgery {
+			var cmd tea.Cmd
+			m.Surgery, cmd = m.Surgery.Update(msg)
+
+			if m.Surgery.State.Done {
+				m.Surgery.State.Done = false
+				m.State.Mode = enums.ModeGit
+				m.State.Focus = enums.PanelFiles
+				m.State.StatusMsg = "git view"
+				return m, loadRepoCmd(m.Git, m.State.ActiveRepo, m.State.Repos[m.State.ActiveRepo])
+			}
+
+			if m.Surgery.State.Executed {
+				m.Surgery.State.Executed = false
+				m.State.Mode = enums.ModeGit
+				m.State.Focus = enums.PanelFiles
+				m.State.StatusMsg = "commit surgery executed"
+				return m, loadRepoCmd(m.Git, m.State.ActiveRepo, m.State.Repos[m.State.ActiveRepo])
+			}
+
+			return m, cmd
+		}
+
 		if m.State.Mode == enums.ModeBranches {
 			var cmd tea.Cmd
 			m.Branches, cmd = m.Branches.Update(msg)
@@ -237,6 +260,20 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.State.Mode = enums.ModeBranches
 			m.State.Focus = enums.PanelGraph
 			m.State.StatusMsg = "branches"
+			return m, nil
+
+		case "I":
+			file, ok := m.selectedFile()
+			if !ok {
+				m.State.StatusMsg = "select a file first"
+				return m, nil
+			}
+
+			repo := m.State.Repos[m.State.ActiveRepo]
+			m.Surgery.Load(repo.Path, file.Path)
+			m.State.Mode = enums.ModeSurgery
+			m.State.Focus = enums.PanelFiles
+			m.State.StatusMsg = "commit surgery"
 			return m, nil
 
 		case "esc":
