@@ -228,6 +228,7 @@ ingit
 | `u` | Unstage file |
 | `S` | Stage all |
 | `U` | Unstage all |
+| `I` | Surgery Mode |
 | `P` | Quick push |
 | `p` | Open push planner |
 | `B` | Open branch explorer |
