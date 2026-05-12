@@ -10,40 +10,100 @@ import (
 	"ingit/utils"
 )
 
+type BranchesView struct {
+	state  states.BranchesState
+	width  int
+	height int
+	render string
+}
+
 func RenderBranchesView(state states.BranchesState, width int, height int) string {
-	if state.Error != "" {
+	view := BranchesView{
+		state:  state,
+		width:  width,
+		height: height,
+	}
+	view.renderBranchesBase()
+
+	if state.Creating {
+		view.createNewBranch()
+	}
+
+	return view.render
+}
+
+func (b *BranchesView) renderBranchesBase() {
+	if b.state.Error != "" {
 		content := TitleStyle.Render("Branches") +
 			"\n\n" +
-			ErrorStyle.Render(state.Error) +
+			ErrorStyle.Render(b.state.Error) +
 			"\n\n" +
 			MutedStyle.Render("enter checkout · m merge · M merge+delete · d delete · tab details · esc back")
 
-		return PanelBorder.
-			Width(width - 2).
-			Height(height).
+		b.render = PanelBorder.
+			Width(b.width - 2).
+			Height(b.height).
 			Render(content)
+		return
 	}
 
 	leftW := 44
-	if width >= 170 {
+	if b.width >= 170 {
 		leftW = 56
 	}
 
-	rightW := width - leftW - 3
+	rightW := b.width - leftW - 3
 	if rightW < 60 {
 		rightW = 60
 	}
 
-	left := renderBranchList(state, leftW, height)
-	right := renderBranchDetails(state, rightW, height)
+	left := renderBranchList(b.state, leftW, b.height)
+	right := renderBranchDetails(b.state, rightW, b.height)
 
-	return lipgloss.JoinHorizontal(lipgloss.Top, left, right)
+	b.render = lipgloss.JoinHorizontal(lipgloss.Top, left, right)
+}
+
+func (b *BranchesView) createNewBranch() {
+	popupW := 56
+	if b.width < 70 {
+		popupW = b.width - 8
+	}
+	if popupW < 32 {
+		popupW = 32
+	}
+
+	input := InputStyle.Render(
+		utils.TruncateLine(" "+b.state.BranchInput+" ", popupW-6),
+	)
+
+	content := lipgloss.JoinVertical(
+		lipgloss.Left,
+		TitleStyle.Render("Create Branch"),
+		"",
+		MutedStyle.Render("Branch name"),
+		input,
+		"",
+		MutedStyle.Render("enter create · esc cancel"),
+	)
+
+	popup := FocusedBorder.
+		Width(popupW).
+		Render(content)
+
+	b.render = lipgloss.Place(
+		b.width,
+		b.height,
+		lipgloss.Center,
+		lipgloss.Center,
+		popup,
+		lipgloss.WithWhitespaceChars(" "),
+	)
 }
 
 func renderBranchList(state states.BranchesState, w int, h int) string {
 	lines := []string{
 		TitleStyle.Render("Branches"),
-		MutedStyle.Render("enter checkout · m merge · M merge+delete · d delete · tab details · esc back"),
+		MutedStyle.Render("enter checkout · m merge · M merge+delete · d delete · tab details · n new branch · esc back"),
 		"",
 	}
 

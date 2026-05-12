@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -78,6 +79,10 @@ func (m *BranchesModel) Load(repoPath string) {
 func (m BranchesModel) Update(msg tea.Msg) (BranchesModel, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
+		if m.State.Creating {
+			return m.handleCreateBranchInput(msg), nil
+		}
+
 		switch msg.String() {
 		case "esc", "backspace":
 			m.State.Done = true
@@ -105,10 +110,54 @@ func (m BranchesModel) Update(msg tea.Msg) (BranchesModel, tea.Cmd) {
 
 		case "d":
 			m.deleteSelected()
+		case "n":
+			m.State.Creating = true
+			m.State.BranchInput = ""
+			m.State.Error = ""
 		}
 	}
 
 	return m, nil
+}
+
+func (m BranchesModel) handleCreateBranchInput(msg tea.KeyMsg) BranchesModel {
+	switch msg.String() {
+	case "esc":
+		m.State.Creating = false
+		m.State.BranchInput = ""
+		m.State.Error = ""
+		return m
+
+	case "enter":
+		name := strings.TrimSpace(m.State.BranchInput)
+		if name == "" {
+			m.State.Error = "branch name cannot be empty"
+			return m
+		}
+
+		if err := m.createBranch(name); err != nil {
+			m.State.Error = err.Error()
+			return m
+		}
+
+		m.State.Creating = false
+		m.State.BranchInput = ""
+		m.Load(m.State.RepoPath)
+		return m
+
+	case "backspace":
+		if len(m.State.BranchInput) > 0 {
+			runes := []rune(m.State.BranchInput)
+			m.State.BranchInput = string(runes[:len(runes)-1])
+		}
+		return m
+
+	default:
+		if len(msg.Runes) > 0 {
+			m.State.BranchInput += string(msg.Runes)
+		}
+		return m
+	}
 }
 
 func (m BranchesModel) SelectedBranch() string {
@@ -286,6 +335,19 @@ func (m BranchesModel) selectedBranch() (models.GitBranch, bool) {
 	}
 
 	return m.State.Branches[m.State.Selected], true
+}
+
+func (m BranchesModel) createBranch(name string) error {
+	out, err := m.Git.GitOutput(m.State.RepoPath, "checkout", "-b", name)
+	if err != nil {
+		message := strings.TrimSpace(out)
+		if message == "" {
+			message = err.Error()
+		}
+		return fmt.Errorf(message)
+	}
+
+	return nil
 }
 
 func containsBranch(branches []models.GitBranch, name string) bool {
