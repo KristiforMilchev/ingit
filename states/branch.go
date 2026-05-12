@@ -20,4 +20,7 @@ type BranchesState struct {
 	Deleted    bool
 	Done       bool
 	CheckedOut bool
+
+	Creating    bool
+	BranchInput string
 }
