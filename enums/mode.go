@@ -7,4 +7,5 @@ const (
 	ModePush
 	ModeQuickPush
 	ModeBranches
+	ModeSurgery
 )

@@ -7,7 +7,7 @@ import (
 	"ingit/states"
 )
 
-func RenderAppView(state states.AppState, branches states.BranchesState) string {
+func RenderAppView(state states.AppState, branches states.BranchesState, surgery states.SurgeryState) string {
 	if state.Width == 0 || state.Height == 0 {
 		return "loading..."
 	}
@@ -31,6 +31,8 @@ func RenderAppView(state states.AppState, branches states.BranchesState) string 
 		body = renderQuickPushMode(state, state.Width, topH)
 	case enums.ModeBranches:
 		body = RenderBranchesView(branches, state.Width, topH)
+	case enums.ModeSurgery:
+		body = RenderSurgeryView(surgery, state.Width, topH)
 	default:
 		body = renderGitMode(state, state.Width, topH)
 	}
