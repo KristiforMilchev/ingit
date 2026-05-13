@@ -3,10 +3,12 @@ package states
 import "ingit/models"
 
 type BranchesState struct {
-	RepoPath string
-
-	Branches []models.GitBranch
-	Selected int
+	RepoPath   string
+	ShowPopup  bool
+	PopupTitle string
+	PopupBody  string
+	Branches   []models.GitBranch
+	Selected   int
 
 	CurrentBranch string
 	Panel         int
