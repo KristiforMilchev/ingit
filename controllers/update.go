@@ -30,7 +30,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if len(m.State.Repos) == 0 {
 			return m, tickCmd()
 		}
-		return m, tea.Batch(loadRepoCmd(m.Git, m.State.ActiveRepo, m.State.Repos[m.State.ActiveRepo]), tickCmd())
+
+		if m.State.Focus == enums.PanelFiles {
+			return m, tickCmd()
+		}
+
+		return m, tea.Batch(
+			loadRepoCmd(m.Git, m.State.ActiveRepo, m.State.Repos[m.State.ActiveRepo]),
+			tickCmd(),
+		)
 
 	case models.RepoLoadedMsg:
 		if msg.Index < 0 || msg.Index >= len(m.State.Repos) {
@@ -38,7 +46,18 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		repo := m.State.Repos[msg.Index]
+
 		m.State.States[repo.Path] = msg.State
+
+		files := m.State.States[repo.Path].Files
+
+		if m.State.ActiveFile >= len(files) {
+			m.State.ActiveFile = len(files) - 1
+		}
+
+		if m.State.ActiveFile < 0 {
+			m.State.ActiveFile = 0
+		}
 
 		if m.State.StatusMsg == "" || strings.HasPrefix(m.State.StatusMsg, "refreshed") {
 			m.State.StatusMsg = "refreshed " + repo.Name
