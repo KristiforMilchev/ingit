@@ -23,6 +23,10 @@ func RenderBranchesView(state states.BranchesState, width int, height int) strin
 		width:  width,
 		height: height,
 	}
+	if view.state.ShowPopup {
+		return view.popupView()
+	}
+
 	view.renderBranchesBase()
 
 	if state.Creating {
@@ -38,7 +42,7 @@ func (b *BranchesView) renderBranchesBase() {
 			"\n\n" +
 			ErrorStyle.Render(b.state.Error) +
 			"\n\n" +
-			MutedStyle.Render("enter checkout · m merge · M merge+delete · d delete · tab details · esc back")
+			MutedStyle.Render("enter checkout · m merge · M merge+delete · d delete · tab details · p - push current · esc back")
 
 		b.render = PanelBorder.
 			Width(b.width - 2).
@@ -97,6 +101,27 @@ func (b *BranchesView) createNewBranch() {
 		lipgloss.Center,
 		popup,
 		lipgloss.WithWhitespaceChars(" "),
+	)
+}
+
+func (b *BranchesView) popupView() string {
+	box := lipgloss.NewStyle().
+		Border(lipgloss.RoundedBorder()).
+		Padding(1, 2).
+		Width(80)
+
+	content := fmt.Sprintf(
+		"%s\n\n%s\n\n[esc] close",
+		b.state.PopupTitle,
+		b.state.PopupBody,
+	)
+
+	return lipgloss.Place(
+		b.width,
+		b.height,
+		lipgloss.Center,
+		lipgloss.Center,
+		box.Render(content),
 	)
 }
 

@@ -114,10 +114,67 @@ func (m BranchesModel) Update(msg tea.Msg) (BranchesModel, tea.Cmd) {
 			m.State.Creating = true
 			m.State.BranchInput = ""
 			m.State.Error = ""
+		case "p":
+			m.syncBranch()
 		}
+
 	}
 
 	return m, nil
+}
+
+func (m *BranchesModel) syncBranch() {
+	_, err := m.Git.GitOutput(
+		m.State.RepoPath,
+		"rev-parse",
+		"--abbrev-ref",
+		"--symbolic-full-name",
+		"@{u}",
+	)
+
+	if err != nil {
+		out, pushErr := m.Git.GitOutput(
+			m.State.RepoPath,
+			"push",
+			"-u",
+			"origin",
+			"HEAD",
+		)
+
+		if pushErr != nil {
+			m.State.PopupTitle = "Push failed"
+			m.State.PopupBody = fmt.Sprintf("%s\n\n%s", pushErr, out)
+			m.State.ShowPopup = true
+			return
+		}
+
+		m.State.PopupTitle = "Push successful"
+		m.State.PopupBody = strings.TrimSpace(out)
+		if m.State.PopupBody == "" {
+			m.State.PopupBody = "Branch pushed and upstream was created."
+		}
+		m.State.ShowPopup = true
+		return
+	}
+
+	out, pushErr := m.Git.GitOutput(
+		m.State.RepoPath,
+		"push",
+	)
+
+	if pushErr != nil {
+		m.State.PopupTitle = "Push failed"
+		m.State.PopupBody = fmt.Sprintf("%s\n\n%s", pushErr, out)
+		m.State.ShowPopup = true
+		return
+	}
+
+	m.State.PopupTitle = "Push successful"
+	m.State.PopupBody = strings.TrimSpace(out)
+	if m.State.PopupBody == "" {
+		m.State.PopupBody = "Branch updated."
+	}
+	m.State.ShowPopup = true
 }
 
 func (m BranchesModel) handleCreateBranchInput(msg tea.KeyMsg) BranchesModel {
